@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fpgdminex — Магазин</title>
+    <!-- Иконки FontAwesome -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            text-align: center;
+        }
+        header {
+            padding: 50px 20px;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://minecraft.net');
+            background-size: cover;
+            border-bottom: 3px solid #55FF55;
+        }
+        h1 {
+            font-size: 4.5em;
+            margin: 0;
+            color: #55FF55;
+            text-shadow: 3px 3px #004400;
+        }
+        .nickname-box {
+            margin: 25px auto;
+            background: #1e1e1e;
+            padding: 15px;
+            display: inline-block;
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+        input {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background: #2a2a2a;
+            color: white;
+            font-size: 1.1em;
+            outline: none;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        .card {
+            background: #1e1e1e;
+            border: 2px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            width: 200px;
+            transition: 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #55FF55;
+        }
+        .card i { font-size: 3em; margin-bottom: 10px; display: block; }
+        .price { font-size: 1.4em; color: #55FF55; margin: 15px 0; font-weight: bold; }
+        
+        .buy-btn {
+            background: #00AA00;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: 0.2s;
+        }
+        .buy-btn:hover { background: #00FF00; color: black; }
+
+        .currency-box {
+            background: #252525;
+            margin: 40px auto;
+            padding: 25px;
+            max-width: 500px;
+            border-radius: 15px;
+            border: 2px dashed #55FFFF;
+        }
+
+        .icon-paladin { color: #aaaaaa; }
+        .icon-magistr { color: #55ffff; }
+        .icon-cerber { color: #ff5555; }
+        .icon-ender { color: #aa00aa; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>fpgdminex</h1>
+    <div class="nickname-box">
+        <input type="text" id="player-nick" placeholder="Ваш ник..." required>
+    </div>
+</header>
+
+<!-- Привилегии -->
+<div class="container">
+    <div class="card">
+        <i class="fa-solid fa-shield-halved icon-paladin"></i>
+        <h2>Паладин</h2>
+        <div class="price">10 руб.</div>
+        <button class="buy-btn" onclick="sendToPay(10, 'Паладин')">Купить</button>
+    </div>
+    <div class="card">
+        <i class="fa-solid fa-wand-sparkles icon-magistr"></i>
+        <h2>Магистр</h2>
+        <div class="price">15 руб.</div>
+        <button class="buy-btn" onclick="sendToPay(15, 'Магистр')">Купить</button>
+    </div>
+    <div class="card">
+        <i class="fa-solid fa-dog icon-cerber"></i>
+        <h2>Цербер</h2>
+        <div class="price">30 руб.</div>
+        <button class="buy-btn" onclick="sendToPay(30, 'Цербер')">Купить</button>
+    </div>
+    <div class="card">
+        <i class="fa-solid fa-eye icon-ender"></i>
+        <h2>Эндер</h2>
+        <div class="price">55 руб.</div>
+        <button class="buy-btn" onclick="sendToPay(55, 'Эндер')">Купить</button>
+    </div>
+</div>
+
+<!-- Калькулятор Майниксов -->
+<div class="currency-box">
+    <i class="fa-solid fa-coins" style="color: #FFD700; font-size: 2.5em;"></i>
+    <h2 style="color: #55FFFF; margin: 10px 0;">Майниксы</h2>
+    <p>1 Майникс = 1.5 рубля</p>
+    <input type="number" id="coin-amount" value="10" min="1" max="500" oninput="calculate()">
+    <div class="price" id="total-price">Итого: 15 руб.</div>
+    <button class="buy-btn" style="background: #00AAAA; width: 200px;" onclick="payCurrency()">Купить валюту</button>
+</div>
+
+<!-- Разбан/Размут -->
+<div class="container" style="margin-bottom: 50px;">
+    <div class="card" style="border-color: #AA0000;">
+        <i class="fa-solid fa-gavel" style="color: #ffaa00;"></i>
+        <h2>Разбан</h2>
+        <div class="price">49 руб.</div>
+        <button class="buy-btn" style="background: #AA0000;" onclick="sendToPay(49, 'Разбан')">Снять бан</button>
+    </div>
+    <div class="card" style="border-color: #00AAAA;">
+        <i class="fa-solid fa-comment-slash" style="color: #55ff55;"></i>
+        <h2>Размут</h2>
+        <div class="price">19 руб.</div>
+        <button class="buy-btn" style="background: #00AAAA;" onclick="sendToPay(19, 'Размут')">Снять мут</button>
+    </div>
+</div>
+
+<!-- НЕВИДИМАЯ ФОРМА ДЛЯ ОТПРАВКИ (ИСКЛЮЧАЕТ ОШИБКИ В ССЫЛКЕ) -->
+<form id="payForm" action="https://donationalerts.com" method="GET" target="_blank" style="display:none;">
+    <input type="hidden" name="amount" id="formAmount">
+    <input type="hidden" name="comment" id="formComment">
+</form>
+
+<script>
+    function calculate() {
+        let amount = document.getElementById('coin-amount').value;
+        if (amount > 500) { amount = 500; document.getElementById('coin-amount').value = 500; }
+        const total = amount * 1.5;
+        document.getElementById('total-price').innerText = `Итого: ${total.toFixed(1)} руб.`;
+    }
+
+    function sendToPay(price, itemName) {
+        const nick = document.getElementById('player-nick').value.trim();
+        
+        if (!nick) {
+            alert("Пожалуйста, введите свой ник!");
+            return;
+        }
+
+        // Заполняем скрытую форму
+        document.getElementById('formAmount').value = price;
+        document.getElementById('formComment').value = nick + " - " + itemName;
+
+        // Отправляем форму (Браузер сам сделает ссылку идеально)
+        document.getElementById('payForm').submit();
+    }
+
+    function payCurrency() {
+        const amount = document.getElementById('coin-amount').value;
+        const price = amount * 1.5;
+        sendToPay(price, amount + ' Майниксов');
+    }
+</script>
+
+</body>
+</html>
