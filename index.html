@@ -4,85 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>fpgdminex — Магазин</title>
-    <!-- Подключение иконок Font Awesome -->
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0f0f0f;
+            background-color: #050505;
             color: #e0e0e0;
             margin: 0;
             text-align: center;
         }
         header {
-            padding: 60px 20px;
-            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('https://minecraft.net');
-            background-size: cover;
-            border-bottom: 4px solid #55FF55;
+            padding: 80px 20px;
+            background: radial-gradient(circle, rgba(85, 255, 85, 0.1) 0%, rgba(0,0,0,1) 80%);
+            border-bottom: 2px solid #55FF55;
         }
-        h1 { font-size: 5em; margin: 0; color: #55FF55; text-shadow: 0 0 20px rgba(85, 255, 85, 0.5), 4px 4px #004400; }
-        
-        .nickname-box { margin: 30px auto; background: #1e1e1e; padding: 20px; border-radius: 12px; display: inline-block; }
-        input#player-nick { padding: 12px; border-radius: 8px; border: 2px solid #333; background: #2a2a2a; color: white; font-size: 1.2em; width: 250px; outline: none; }
-        
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 50% { transform: translateX(10px); } }
-        .input-error { border-color: #ff5555 !important; animation: shake 0.4s ease-in-out; }
 
-        .container { max-width: 1200px; margin: 40px auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; }
-
-        .card { background: #181818; border: 2px solid #252525; border-radius: 16px; padding: 25px; width: 220px; transition: 0.4s; }
-        .card:hover { transform: translateY(-12px); }
-        .card i { font-size: 3.5em; margin-bottom: 15px; display: block; }
-        
-        .icon-paladin { color: #aaa; } .icon-magistr { color: #55ffff; } .icon-cerber { color: #ff5555; } .icon-ender { color: #aa00aa; }
-        .price { font-size: 1.4em; color: #55FF55; margin: 15px 0; font-weight: 800; }
-
-        /* КНОПКИ КУПИТЬ */
-        .buy-btn {
-            background: linear-gradient(135deg, #00aa00 0%, #00ff00 100%);
-            color: white; padding: 14px; border: none; border-radius: 10px; font-weight: 900; width: 100%;
-            text-transform: uppercase; cursor: pointer; position: relative; overflow: hidden;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.5); transition: 0.3s;
-        }
-        .buy-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
-        .btn-blue { background: linear-gradient(135deg, #00aaaa, #55ffff); }
-        .btn-red { background: linear-gradient(135deg, #aa0000, #ff5555); }
-
-        /* КРАСНОЕ ОКНО УВЕДОМЛЕНИЯ */
-        #payment-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 10000;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background: #1a0000;
-            padding: 40px;
-            border-radius: 20px;
-            max-width: 600px;
-            border: 3px solid #ff0000;
-            box-shadow: 0 0 60px rgba(255, 0, 0, 0.7);
+        /* ПЛАВНЫЙ НЕОНОВЫЙ ЗАГОЛОВОК */
+        h1 { 
+            font-size: 6.5em; 
+            margin: 0; 
+            font-weight: 900;
+            text-transform: uppercase;
             color: #fff;
+            text-shadow: 0 0 10px #fff, 0 0 20px #55FF55, 0 0 40px #55FF55, 0 0 80px #55FF55;
+            animation: neonPulse 2s infinite alternate;
+        }
+
+        @keyframes neonPulse {
+            from { text-shadow: 0 0 10px #fff, 0 0 20px #55FF55, 0 0 40px #55FF55; opacity: 1; }
+            to { text-shadow: 0 0 15px #fff, 0 0 30px #55FF55, 0 0 60px #55FF55, 0 0 100px #55FF55; opacity: 0.9; }
+        }
+        
+        .nickname-box { margin: 30px auto; background: #111; padding: 20px; border-radius: 15px; border: 1px solid #222; }
+        input#player-nick { 
+            padding: 15px; border-radius: 10px; border: 2px solid #55FF55; 
+            background: #000; color: #55FF55; font-size: 1.3em; width: 300px; outline: none;
+        }
+
+        .container { max-width: 1200px; margin: 40px auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+
+        .card { 
+            background: #0a0a0a; border: 1px solid #222; border-radius: 20px; 
+            padding: 25px; width: 210px; transition: 0.4s; 
+        }
+        .card:hover { transform: translateY(-10px); border-color: #55FF55; box-shadow: 0 0 25px rgba(85, 255, 85, 0.2); }
+        
+        /* СТИЛЬ ДЛЯ ЭМОДЗИ */
+        .emoji { font-size: 60px; display: block; margin-bottom: 15px; }
+        
+        .price { font-size: 1.6em; color: #55FF55; margin: 15px 0; font-weight: 800; }
+
+        .buy-btn {
+            background: transparent; color: #55FF55; padding: 12px; border: 2px solid #55FF55; 
+            border-radius: 10px; font-weight: 900; width: 100%; cursor: pointer; transition: 0.3s;
+        }
+        .buy-btn:hover { background: #55FF55; color: #000; box-shadow: 0 0 20px #55FF55; }
+        
+        .btn-red { border-color: #ff5555; color: #ff5555; }
+        .btn-red:hover { background: #ff5555; color: #000; box-shadow: 0 0 20px #ff5555; }
+        .btn-blue { border-color: #55ffff; color: #55ffff; }
+        .btn-blue:hover { background: #55ffff; color: #000; box-shadow: 0 0 20px #55ffff; }
+
+        .currency-box { background: #0a0a0a; margin: 50px auto; padding: 30px; max-width: 500px; border-radius: 20px; border: 2px dashed #55ffff; }
+
+        /* ТАБЛИЧКА С ИНСТРУКЦИЕЙ */
+        #payment-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.98); z-index: 10000; justify-content: center; align-items: center;
+        }
+        .modal-content { 
+            background: #1a0000; padding: 40px; border-radius: 20px; max-width: 600px; 
+            border: 3px solid #ff0000; box-shadow: 0 0 60px rgba(255, 0, 0, 0.7); color: #fff; 
         }
         .modal-content h2 { color: #ff5555; text-transform: uppercase; margin-bottom: 20px; font-size: 2em; }
         .modal-content p { font-size: 1.2em; line-height: 1.6; color: #ffcccc; }
-        #timer-text { font-size: 4em; font-weight: 900; color: #ff0000; margin-top: 20px; display: block; text-shadow: 0 0 15px red; }
 
-        .currency-box { background: #1a1a1a; margin: 60px auto; padding: 35px; max-width: 550px; border-radius: 20px; border: 2px dashed #55FFFF; }
-
-        .tg-wrapper { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 9999; text-decoration: none; }
+        .tg-wrapper { position: fixed; bottom: 25px; right: 25px; text-decoration: none; }
         .tg-button {
-            background: linear-gradient(135deg, #229ED9 0%, #2CB1F5 100%);
-            color: white !important; width: 65px; height: 65px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; font-size: 32px;
-            box-shadow: 0 10px 25px rgba(34, 158, 217, 0.4); transition: 0.3s;
+            background: #229ED9; color: white !important; width: 70px; height: 70px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 35px;
+            box-shadow: 0 0 20px rgba(34, 158, 217, 0.5);
         }
-        @keyframes fly { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-2px, -5px) rotate(-5deg); } }
-        .tg-button i { animation: fly 3s ease-in-out infinite; }
-        .tg-text { color: #fff; font-size: 11px; font-weight: 800; background: #229ED9; padding: 5px 12px; border-radius: 20px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -91,48 +93,48 @@
     <div class="modal-content">
         <h2>Внимание!</h2>
         <p>После того как вы перекинетесь на ссылку с оплатой через 25 секунд, вам нужно снизу вписать свой ник и донат который вы хотите, а ещё нужно будет написать цену доната там где уже стоит первоначальная цена(10 рублей) или цену которую вы увидите когда будуте выбирать количество Майниксов.</p>
-        <span id="timer-text">25</span>
+        <span id="timer-text" style="font-size: 5em; font-weight: 900; color: #ff0000; margin-top: 20px; display: block; text-shadow: 0 0 20px red;">25</span>
     </div>
 </div>
 
 <header>
     <h1>fpgdminex</h1>
-    <div class="nickname-box"><input type="text" id="player-nick" placeholder="Введите ваш ник..."></div>
+    <div class="nickname-box">
+        <input type="text" id="player-nick" placeholder="ВВЕДИ СВОЙ НИК...">
+    </div>
 </header>
 
 <div class="container">
-    <div class="card"><i class="fa-solid fa-shield-halved icon-paladin"></i><h2>Паладин</h2><div class="price">10 руб.</div><button class="buy-btn" onclick="startPayment(10, 'Паладин')">Купить</button></div>
-    <div class="card"><i class="fa-solid fa-wand-sparkles icon-magistr"></i><h2>Магистр</h2><div class="price">15 руб.</div><button class="buy-btn" onclick="startPayment(15, 'Магистр')">Купить</button></div>
-    <div class="card"><i class="fa-solid fa-dog icon-cerber"></i><h2>Цербер</h2><div class="price">30 руб.</div><button class="buy-btn" onclick="startPayment(30, 'Цербер')">Купить</button></div>
-    <div class="card"><i class="fa-solid fa-eye icon-ender"></i><h2>Эндер</h2><div class="price">55 руб.</div><button class="buy-btn" onclick="startPayment(55, 'Эндер')">Купить</button></div>
+    <div class="card"><span class="emoji">🛡️</span><h2>Паладин</h2><div class="price">10 руб.</div><button class="buy-btn" onclick="startPayment(10, 'Паладин')">Купить</button></div>
+    <div class="card"><span class="emoji">🔮</span><h2>Магистр</h2><div class="price">15 руб.</div><button class="buy-btn" onclick="startPayment(15, 'Магистр')">Купить</button></div>
+    <div class="card"><span class="emoji">🐕</span><h2>Цербер</h2><div class="price">30 руб.</div><button class="buy-btn" onclick="startPayment(30, 'Цербер')">Купить</button></div>
+    <div class="card"><span class="emoji">👁️</span><h2>Эндер</h2><div class="price">55 руб.</div><button class="buy-btn" onclick="startPayment(55, 'Эндер')">Купить</button></div>
 </div>
 
 <div class="currency-box">
-    <i class="fa-solid fa-coins" style="color: #FFD700; font-size: 3em; display: block; margin-bottom: 10px;"></i>
+    <span class="emoji" style="font-size: 50px;">💰</span>
     <h2>Майниксы</h2>
-    <input type="number" id="coin-amount" value="10" min="1" oninput="calculate()" style="padding: 10px; background: #333; color: white; border: none; width: 80px; text-align: center; border-radius: 5px; font-size: 1.2em;">
-    <div class="price" id="total-price">Итого: 15 руб.</div>
-    <button class="buy-btn btn-blue" style="width: 250px;" onclick="payCurrency()">Купить валюту</button>
+    <input type="number" id="coin-amount" value="10" min="1" oninput="calculate()" style="padding: 10px; background: #000; color: #55ffff; border: 1px solid #55ffff; width: 80px; text-align: center; font-size: 1.2em; outline: none;">
+    <div class="price" id="total-price" style="color: #55ffff;">Итого: 15 руб.</div>
+    <button class="buy-btn" style="border-color: #55ffff; color: #55ffff; width: 250px;" onclick="payCurrency()">Купить валюту</button>
 </div>
 
 <div class="container" style="margin-bottom: 100px;">
-    <div class="card" style="border-color: #600;"><i class="fa-solid fa-gavel" style="color: #fa0;"></i><h2>Разбан</h2><div class="price">49 руб.</div><button class="buy-btn btn-red" onclick="startPayment(49, 'Разбан')">Купить</button></div>
-    <div class="card" style="border-color: #066;"><i class="fa-solid fa-comment-slash" style="color: #5f5;"></i><h2>Размут</h2><div class="price">19 руб.</div><button class="buy-btn btn-blue" onclick="startPayment(19, 'Размут')">Купить</button></div>
+    <div class="card" style="border-color: #ff5555;"><span class="emoji">🔨</span><h2>Разбан</h2><div class="price" style="color: #ff5555;">49 руб.</div><button class="buy-btn btn-red" onclick="startPayment(49, 'Разбан')">Купить</button></div>
+    <div class="card" style="border-color: #55ffff;"><span class="emoji">🔇</span><h2>Размут</h2><div class="price" style="color: #55ffff;">19 руб.</div><button class="buy-btn btn-blue" onclick="startPayment(19, 'Размут')">Купить</button></div>
 </div>
 
-<a href="https://t.me" target="_blank" class="tg-wrapper">
+<a href="https://t.me/fpgdminex" class="tg-wrapper">
     <div class="tg-button"><i class="fa-brands fa-telegram"></i></div>
-    <span class="tg-text">Наш Telegram</span>
 </a>
 
 <script>
-    // --- НАСТРОЙКИ ТЕЛЕГРАМ БОТА ---
     const TELEGRAM_TOKEN = '8629415382:AAFqO4ZSwtPQwo267RiZD2HrLN5kN-S5Y2w'; 
     const TELEGRAM_CHAT_ID = '7335785163'; 
 
     function calculate() { 
         let a = document.getElementById('coin-amount').value; 
-        document.getElementById('total-price').innerText = `Итого: ${a * 1.5} руб.`; 
+        document.getElementById('total-price').innerText = `Итого: ${Math.round(a * 1.5)} руб.`; 
     }
 
     function payCurrency() {
@@ -141,36 +143,24 @@
     }
 
     function startPayment(price, itemName) {
-        const n = document.getElementById('player-nick');
-        const nickname = n.value.trim();
+        const nick = document.getElementById('player-nick').value;
+        if (!nick) { alert('ВВЕДИ НИК!'); return; }
 
-        if (!nickname) { 
-            n.classList.add('input-error'); 
-            setTimeout(() => n.classList.remove('input-error'), 500); 
-            n.focus(); 
-            return; 
-        }
-
-        // ОТПРАВКА В ТЕЛЕГРАМ
-        const message = `🛒 Новая заявка!\n👤 Игрок: ${nickname}\n💎 Товар: ${itemName}\n💰 Цена: ${price} руб.`;
-        fetch(`https://telegram.org{TELEGRAM_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(message)}`)
-        .catch(err => console.log('Ошибка отправки в ТГ: ', err));
-
-        // ТАЙМЕР НА 25 СЕКУНД И ПЕРЕХОД
-        const modal = document.getElementById('payment-modal');
+        document.getElementById('payment-modal').style.display = 'flex';
+        let timeLeft = 25;
         const timerText = document.getElementById('timer-text');
-        let timeLeft = 25; 
-        modal.style.display = 'flex';
-        
-        const countdown = setInterval(() => {
+
+        const interval = setInterval(() => {
             timeLeft--;
             timerText.innerText = timeLeft;
             if (timeLeft <= 0) {
-                clearInterval(countdown);
-                window.location.href = "https://www.donationalerts.com/r/tetya_zina_52";
+                clearInterval(interval);
+                fetch(`https://telegram.org{TELEGRAM_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=Заказ: ${nick} - ${itemName} (${price}р)`);
+                window.location.href = "https://www.donationalerts.com/r/tetya_zina_52"; 
             }
         }, 1000);
     }
 </script>
+
 </body>
 </html>
