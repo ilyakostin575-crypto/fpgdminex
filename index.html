@@ -33,7 +33,6 @@
             to { text-shadow: 0 0 15px #fff, 0 0 30px #55FF55, 0 0 60px #55FF55; opacity: 0.9; }
         }
         
-        /* ПЛОСКИЙ ОВАЛЬНЫЙ КОНТУР НИКА */
         .nickname-box { 
             margin: 15px auto; 
             background: #111; 
@@ -56,13 +55,16 @@
         }
 
         .container { max-width: 1200px; margin: 40px auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
-        .card { background: #0a0a0a; border: 1px solid #222; border-radius: 20px; padding: 25px; width: 210px; transition: 0.4s; }
+        .card { background: #0a0a0a; border: 1px solid #222; border-radius: 20px; padding: 25px; width: 210px; transition: 0.4s; position: relative; }
         .card:hover { transform: translateY(-10px); border-color: #55FF55; box-shadow: 0 0 25px rgba(85, 255, 85, 0.2); }
         .emoji { font-size: 60px; display: block; margin-bottom: 15px; }
         .price { font-size: 1.6em; color: #55FF55; margin: 15px 0; font-weight: 800; }
-        .buy-btn { background: transparent; color: #55FF55; padding: 12px; border: 2px solid #55FF55; border-radius: 10px; font-weight: 900; width: 100%; cursor: pointer; transition: 0.3s; }
+        .buy-btn { background: transparent; color: #55FF55; padding: 12px; border: 2px solid #55FF55; border-radius: 10px; font-weight: 900; width: 100%; cursor: pointer; transition: 0.3s; margin-bottom: 10px; }
         .buy-btn:hover { background: #55FF55; color: #000; box-shadow: 0 0 20px #55FF55; }
         
+        .desc-link { color: #888; font-size: 0.9em; text-decoration: underline; cursor: pointer; display: block; }
+        .desc-link:hover { color: #fff; }
+
         .btn-red { border-color: #ff5555; color: #ff5555; }
         .btn-red:hover { background: #ff5555; color: #000; box-shadow: 0 0 20px #ff5555; }
         .btn-blue { border-color: #55ffff; color: #55ffff; }
@@ -70,14 +72,22 @@
 
         .currency-box { background: #0a0a0a; margin: 50px auto; padding: 30px; max-width: 500px; border-radius: 20px; border: 2px dashed #55ffff; }
 
-        #payment-modal {
+        #payment-modal, #desc-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.98); z-index: 10000; justify-content: center; align-items: center;
         }
         .modal-content { 
             background: #1a0000; padding: 40px; border-radius: 20px; max-width: 600px; 
             border: 3px solid #ff0000; box-shadow: 0 0 60px rgba(255, 0, 0, 0.7); color: #fff; 
+            position: relative;
         }
+        
+        .close-modal {
+            position: absolute; top: 20px; right: 20px; font-size: 30px; color: #fff; 
+            cursor: pointer; font-weight: bold; line-height: 1;
+        }
+        .close-modal:hover { color: #ff0000; }
+
         .tg-wrapper { position: fixed; bottom: 25px; right: 25px; text-decoration: none; }
         .tg-button {
             background: #229ED9; color: white; width: 60px; height: 60px; border-radius: 50%;
@@ -89,9 +99,19 @@
 
 <div id="payment-modal">
     <div class="modal-content">
-        <h2>Внимание!</h2>
+        <span class="close-modal" onclick="closePayment()">×</span>
+        <h2 style="font-size: 5em; color: #ff0000; text-transform: uppercase; margin: 0;">Внимание!</h2>
         <p>После того, как вы перенаправитесь на ссылку с оплатой через 25 секунд, вам нужно будет написать свой ник и донат, который вы хотите, а еще нужно будет написать цену доната там, где уже стоит первоначальная цена (10 рублей) или цену, которую вы увидите, когда будут выбраны количество Майниксов.</p>
         <span id="timer-text" style="font-size: 5em; font-weight: 900; color: #ff0000; margin-top: 20px; display: block;">25</span>
+    </div>
+</div>
+
+<div id="desc-modal">
+    <div class="modal-content" style="background: #0a0a0a; border-color: #55FF55; box-shadow: 0 0 40px rgba(85, 255, 85, 0.3);">
+        <span class="close-modal" onclick="document.getElementById('desc-modal').style.display='none'">×</span>
+        <h2 id="desc-title" style="color: #55FF55; font-size: 3em; margin-bottom: 20px;">ОПИСАНИЕ ТОВАРА</h2>
+        <div id="desc-body" style="text-align: center; font-size: 2em; line-height: 1.4; font-weight: bold; white-space: pre-wrap;">
+        </div>
     </div>
 </div>
 
@@ -103,10 +123,10 @@
 </header>
 
 <div class="container">
-    <div class="card"><span class="emoji">🛡️</span><h2>Паладин</h2><div class="price">10 руб.</div><button class="buy-btn" onclick="startPayment(10, 'Паладин')">Купить</button></div>
-    <div class="card"><span class="emoji">🔮</span><h2>Магистр</h2><div class="price">15 руб.</div><button class="buy-btn" onclick="startPayment(15, 'Магистр')">Купить</button></div>
-    <div class="card"><span class="emoji">🐕</span><h2>Цербер</h2><div class="price">30 руб.</div><button class="buy-btn" onclick="startPayment(30, 'Цербер')">Купить</button></div>
-    <div class="card"><span class="emoji">👁️</span><h2>Эндер</h2><div class="price">55 руб.</div><button class="buy-btn" onclick="startPayment(55, 'Эндер')">Купить</button></div>
+    <div class="card"><span class="emoji">🛡️</span><h2>Паладин</h2><div class="price">10 руб.</div><button class="buy-btn" onclick="startPayment(10, 'Паладин')">Купить</button><span class="desc-link" onclick="showDesc('Паладин')">Описание товара</span></div>
+    <div class="card"><span class="emoji">🔮</span><h2>Магистр</h2><div class="price">15 руб.</div><button class="buy-btn" onclick="startPayment(15, 'Магистр')">Купить</button><span class="desc-link" onclick="showDesc('Магистр')">Описание товара</span></div>
+    <div class="card"><span class="emoji">🐕</span><h2>Цербер</h2><div class="price">30 руб.</div><button class="buy-btn" onclick="startPayment(30, 'Цербер')">Купить</button><span class="desc-link" onclick="showDesc('Цербер')">Описание товара</span></div>
+    <div class="card"><span class="emoji">👁️</span><h2>Эндер</h2><div class="price">55 руб.</div><button class="buy-btn" onclick="startPayment(55, 'Эндер')">Купить</button><span class="desc-link" onclick="showDesc('Эндер')">Описание товара</span></div>
 </div>
 
 <div class="currency-box">
@@ -117,7 +137,6 @@
     <button class="buy-btn" style="border-color: #55ffff; color: #55ffff; width: 250px;" onclick="payCurrency()">Купить валюту</button>
 </div>
 
-<!-- ВОЗВРАЩЕННЫЕ КАРТОЧКИ РАЗБАНА И РАЗМУТА -->
 <div class="container" style="margin-bottom: 100px;">
     <div class="card" style="border-color: #ff5555;"><span class="emoji">🔨</span><h2>Разбан</h2><div class="price" style="color: #ff5555;">49 руб.</div><button class="buy-btn btn-red" onclick="startPayment(49, 'Разбан')">Купить</button></div>
     <div class="card" style="border-color: #55ffff;"><span class="emoji">🔇</span><h2>Размут</h2><div class="price" style="color: #55ffff;">19 руб.</div><button class="buy-btn btn-blue" onclick="startPayment(19, 'Размут')">Купить</button></div>
@@ -128,6 +147,15 @@
 </a>
 
 <script>
+    let paymentInterval;
+
+    const descriptions = {
+        'Паладин': 'Паладин может:\nОткрыть наковальню с помощью команды /anvil и переименовывать предметы и т.д.,\nпокормить себя с помощью команды /feed,\nможет себя покормить и выличить себя и насытить с помощью команды /heal.',
+        'Магистр': 'Магистр может:\nПотушить других игроков и себя с команды /ext,\nможет покормить и похилить других игроков и себя с команды /ext.\n(Подходит для игры с другом).',
+        'Цербер': 'Цербер может:\nЛетать /fly\nмутить игроков на 30 минут с команды /tempmute [Ник игрока]\nон может размутить любога игрока 3 раза в день командой /unmute\nи ещё он может смотреть список банов с команды /banlist.',
+        'Эндер': 'Эндер может: Замутить игрока максимум на 1 час /tempmute, позволяет изменять название предмета, описание радужным и оригинальным цветом /itemlore /itemname, режим наблюдатель и обратно /gamemode spectator /gamemode adventure'
+    };
+
     function calculate() { 
         let a = document.getElementById('coin-amount').value; 
         document.getElementById('total-price').innerText = `Итого: ${Math.round(a * 1.5)} руб.`; 
@@ -138,6 +166,12 @@
         startPayment(amount * 1.5, amount + ' Майниксов');
     }
 
+    function showDesc(name) {
+        document.getElementById('desc-title').innerText = "ОПИСАНИЕ ТОВАРА";
+        document.getElementById('desc-body').innerText = descriptions[name];
+        document.getElementById('desc-modal').style.display = 'flex';
+    }
+
     function startPayment(price, itemName) {
         const nick = document.getElementById('player-nick').value;
         if (!nick) { alert('ВВЕДИ НИК!'); return; }
@@ -145,15 +179,21 @@
         document.getElementById('payment-modal').style.display = 'flex';
         let timeLeft = 25;
         const timerText = document.getElementById('timer-text');
+        timerText.innerText = timeLeft;
 
-        const interval = setInterval(() => {
+        paymentInterval = setInterval(() => {
             timeLeft--;
             timerText.innerText = timeLeft;
             if (timeLeft <= 0) {
-                clearInterval(interval);
+                clearInterval(paymentInterval);
                 window.location.href = "https://www.donationalerts.com/r/tetya_zina_52"; 
             }
         }, 1000);
+    }
+
+    function closePayment() {
+        clearInterval(paymentInterval);
+        document.getElementById('payment-modal').style.display = 'none';
     }
 </script>
 </body>
